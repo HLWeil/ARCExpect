@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/project/">
+    <File Path=".gitignore" />
+    <File Path="build.cmd" />
+    <File Path="dotnet-tools.json" />
+    <File Path="pyproject.toml" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="ArcExpect.Tests/ArcExpect.Tests.fsproj" />
+  <Project Path="ArcExpect/ArcExpect.fsproj" />
+</Solution>

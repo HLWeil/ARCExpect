@@ -22,6 +22,9 @@ let private erroredMsg name results =
 
 // ── test data ────────────────────────────────────────────────────────────────
 
+// These tests are not themselves testing the runner; they are just sample suites to be run by the runner in the test cases below.
+// Each suite is designed to have a specific combination of outcomes, and the test cases verify that the runner produces the expected outcomes for each test.
+
 let private passingTests =
     testList "Suite" [
         testCase "pass1" <| fun () -> Expect.equal 1 1 "1 = 1"

@@ -220,6 +220,5 @@ __marimo__/
 .vs
 obj
 bin
-*.slnx
 ARCExpect/py
 ARCExpect.Tests/py

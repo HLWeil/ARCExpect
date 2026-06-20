@@ -80,12 +80,14 @@ module Hash =
     let hashFile (path: string) =
 
         #if FABLE_COMPILER_PYTHON
-        emitPyExpr (path) """h = hashlib.sha256()
-with open(path, "rb") as f:
-    for chunk in iter(lambda: f.read(8192), b""):
-        h.update(chunk)
-h.hexdigest()
-"""     
+        failwithf "could not compute hash for file %s: Method not yet implemented for python transpiled code." path
+// to-do: implement
+//        emitPyExpr (path) """h = hashlib.sha256()
+//with open(path, "rb") as f:
+//    for chunk in iter(lambda: f.read(8192), b""):
+//        h.update(chunk)
+//h.hexdigest()
+//"""     
         #else
         use sha256 = System.Security.Cryptography.SHA256.Create()
         use stream = System.IO.File.OpenRead(path)
