@@ -13,10 +13,10 @@ let skipTestsFlag = "--skipTests"
 let failOnFocusFlag = "--fail-on-focused-tests"
 
 [<Literal>]
-let jsIOResultFolder = "./tests/TestingUtils/TestResults/js"
+let jsIOResultFolder = "./TestResults/js"
 
 [<Literal>]
-let pyIOResultFolder = "./tests/TestingUtils/TestResults/py"
+let pyIOResultFolder = "./TestResults/py"
 
 let private runTool command args =
     if System.OperatingSystem.IsWindows() then

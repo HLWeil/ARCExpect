@@ -8,4 +8,5 @@
   </Folder>
   <Project Path="ArcExpect.Tests/ArcExpect.Tests.fsproj" />
   <Project Path="ArcExpect/ArcExpect.fsproj" />
+  <Project Path="build/build.fsproj" />
 </Solution>

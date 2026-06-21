@@ -145,6 +145,7 @@ let clean =
         ++ "src/**/obj"
         ++ "tests/**/bin"
         ++ "tests/**/obj"
+        ++ "TestResults"
         ++ "dist"
         |> Shell.cleanDirs
     }

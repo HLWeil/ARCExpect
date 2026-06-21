@@ -222,3 +222,4 @@ obj
 bin
 ARCExpect/py
 ARCExpect.Tests/py
+TestResults

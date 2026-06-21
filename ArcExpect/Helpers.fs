@@ -5,14 +5,14 @@ open Fable.Pyxpecto
 
 
 
-//#if FABLE_COMPILER_PYTHON
+#if FABLE_COMPILER_PYTHON
 open Fable.Core.PyInterop
 
 importAll "shutil"
 importAll "os"
 import "Path" "pathlib"
 importAll "hashlib"
-//#endif
+#endif
 
 
 
