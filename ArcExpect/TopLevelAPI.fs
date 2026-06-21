@@ -133,7 +133,7 @@ type Execute =
                 ?Thresholds = Thresholds,
                 ?DefaultColor = DefaultColor
             )
-            |> fun b -> b.WriteBadge(path)
+            |> fun b -> b.WriteBadge(path, overwrite = true)
 
     static member ValidationPipeline(
         basePath: string,

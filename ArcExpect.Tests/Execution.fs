@@ -34,11 +34,35 @@ let private criticalFailurePackage =
         ]
     )
 
+let private allPassingPackage =
+    Setup.ValidationPackage(
+        name = "all-passing-tests",
+        summary = "Tests for green validation badges",
+        description = "Exercises the all-passing badge branch.",
+        majorVersion = 1,
+        minorVersion = 0,
+        patchVersion = 0,
+        programmingLanguage = "fsharp",
+        CriticalValidationCases = [
+            testCase "critical pass" <| fun () -> Expect.isTrue true "critical test passes"
+        ],
+        NonCriticalValidationCases = [
+            testCase "non-critical pass" <| fun () -> Expect.isTrue true "non-critical test passes"
+        ]
+    )
+
 let private validationSummaryAsync () =
     validationPackage |> Execute.ValidationAsync()
 
 let private criticalFailureSummaryAsync () =
     criticalFailurePackage |> Execute.ValidationAsync()
+
+let private allPassingSummaryAsync () =
+    allPassingPackage |> Execute.ValidationAsync()
+
+let private isGreenBadge (svg: string) =
+    let normalized = svg.ToLowerInvariant()
+    normalized.Contains "#4c1" || normalized.Contains "#97ca00"
 
 let private validationPipelineBasePath =
 #if FABLE_COMPILER_PYTHON
@@ -121,6 +145,7 @@ let badgeCreation = testList "badge creation" [
 
         Expect.isTrue (badge.BadgeSvgText.Contains "critical tests") "badge includes its label"
         Expect.isTrue (badge.BadgeSvgText.Contains "1/1") "badge includes passed and total tests"
+        Expect.isTrue (isGreenBadge badge.BadgeSvgText) "all-passing test results produce a green badge"
     }
 
     testCaseAsync "creates a validation badge that includes non-critical results" <| async {
@@ -129,6 +154,14 @@ let badgeCreation = testList "badge creation" [
 
         Expect.isTrue (badge.BadgeSvgText.Contains "ARC validation") "badge includes its label"
         Expect.isTrue (badge.BadgeSvgText.Contains "1/2") "badge includes all passed and total tests"
+    }
+
+    testCaseAsync "creates a green validation badge when all tests pass" <| async {
+        let! summary = allPassingSummaryAsync ()
+        let badge = summary |> BadgeCreation.ofValidationSummary "ARC validation"
+
+        Expect.isTrue (badge.BadgeSvgText.Contains "2/2") "badge includes all passed and total tests"
+        Expect.isTrue (isGreenBadge badge.BadgeSvgText) "all-passing validation produces a green badge"
     }
 
     testCaseAsync "creates a critical-error badge when critical tests fail" <| async {
@@ -157,20 +190,16 @@ let badgeCreation = testList "badge creation" [
         Expect.isTrue (badge.Contains "execution-tests@1.0.0") "badge uses the default package-version label"
         Expect.isTrue (badge.Contains "1/2") "badge represents total passed tests"
 
-#if !FABLE_COMPILER_PYTHON
-    testCase "writes a badge SVG through Execute.BadgeCreation" <| fun () ->
-        let path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"arcexpect-{System.Guid.NewGuid()}.svg")
+    testCaseAsync "writes a badge SVG through Execute.BadgeCreation" <| async {
+        let path = ARCExpect.Helper.Path.combine validationPipelineBasePath "execute-badge-creation.svg"
 
-        try
-            validationPackage
-            |> Execute.Validation()
-            |> Execute.BadgeCreation(path, "ARC validation")
+        ARCExpect.Helper.Directory.ensure validationPipelineBasePath
 
-            Expect.isTrue (System.IO.File.Exists path) "badge SVG is written"
-            Expect.isTrue ((System.IO.File.ReadAllText path).Contains "ARC validation") "written SVG includes the label"
-        finally
-            if System.IO.File.Exists path then
-                System.IO.File.Delete path
+        let! summary = validationSummaryAsync ()
 
-#endif
+        summary
+        |> Execute.BadgeCreation(path, "ARC validation")
+
+        Expect.isTrue (ARCExpect.Helper.File.readAllText(path).Contains "ARC validation") "written SVG includes the label"
+    }
 ]

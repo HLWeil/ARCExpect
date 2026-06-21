@@ -26,9 +26,18 @@ type BadgeCreation =
                 ValueSuffix
                 |> Option.defaultValue $"/{max}"
 
+            let defaultColor =
+                DefaultColor
+                |> Option.defaultValue (
+                    if max > 0 && testResults.Passed.Length = max then
+                        BadgeColor.GREEN
+                    else
+                        BadgeColor.ORANGE_2
+                )
+
             Badge(
                 label = labelText,
-                defaultColor = (DefaultColor |> Option.defaultValue (BadgeColor.ORANGE_2) ),
+                defaultColor = defaultColor,
                 thresholds = thresholds,
                 value = testResults.Passed.Length,
                 valueSuffix = valueSuffix
@@ -73,9 +82,18 @@ type BadgeCreation =
                     ValueSuffix
                     |> Option.defaultValue $"/{total}"
 
+                let defaultColor =
+                    DefaultColor
+                    |> Option.defaultValue (
+                        if total > 0 && totalPassed = total then
+                            BadgeColor.GREEN
+                        else
+                            BadgeColor.ORANGE_2
+                    )
+
                 Badge(
                     label = labelText,
-                    defaultColor = (DefaultColor |> Option.defaultValue (BadgeColor.ORANGE_2) ),
+                    defaultColor = defaultColor,
                     thresholds = thresholds,
                     value = totalPassed,
                     valueSuffix = valueSuffix
