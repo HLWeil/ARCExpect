@@ -20,15 +20,16 @@ dependencies = [
 dev = [
     "pytest>=8.1.1,<9",
     "twine>=4.0.2",
-    "fable_library>=5.3.0"
+    "fable_library>=5.3.0",
+    "anybadge"
 ]
 
 [tool.poetry]
 include = [
-    "src/ROCratePCC/py/**/*.py"
+    "src/ArcExpect/py/**/*.py"
 ]
 packages = [
-    { include = "**/*.py", from = "src/ROCratePCC/", to = "rocratepcc" }
+    { include = "**/*.py", from = "src/ArcExpect/", to = "arcexpect" }
 ]
 
 [build-system]

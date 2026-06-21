@@ -1,14 +1,13 @@
 ﻿namespace ARCExpect
 
-open AnyBadge.NET
-
 type BadgeCreation =
+
 
     static member ofTestResults(
         labelText: string,
         ?ValueSuffix: string,
-        ?Thresholds: Map<int, Color>,
-        ?DefaultColor: Color
+        ?Thresholds: Map<string, string>,
+        ?DefaultColor: string
     ) =
         
         fun (testResults: TestRunResults) ->
@@ -18,9 +17,9 @@ type BadgeCreation =
             let thresholds = 
                 Thresholds
                 |> Option.defaultValue (Map([
-                    0, Color.RED
-                    max/2, Color.ORANGE_2
-                    max, Color.GREEN
+                    string 0, BadgeColor.RED
+                    string (max/2), BadgeColor.ORANGE_2
+                    string max, BadgeColor.GREEN
                 ]))
 
             let valueSuffix = 
@@ -29,18 +28,18 @@ type BadgeCreation =
 
             Badge(
                 label = labelText,
-                defaultColor = (DefaultColor |> Option.defaultValue (Color.fromString Defaults.DEFAULT_COLOR) ),
-                Thresholds = thresholds,
+                defaultColor = (DefaultColor |> Option.defaultValue (BadgeColor.ORANGE_2) ),
+                thresholds = thresholds,
                 value = testResults.Passed.Length,
-                ValueSuffix = valueSuffix
+                valueSuffix = valueSuffix
             )
 
 
     static member ofValidationSummary(
         labelText: string,
         ?ValueSuffix: string,
-        ?Thresholds: Map<int, Color>,
-        ?DefaultColor: Color
+        ?Thresholds: Map<string, string>,
+        ?DefaultColor: string
     ) =
         
         fun (validationSummary: ValidationSummary) ->
@@ -55,9 +54,9 @@ type BadgeCreation =
 
                 Badge(
                     label = labelText,
-                    defaultColor = Color.RED,
+                    defaultColor = BadgeColor.RED,
                     value = criticalFailedOrErrored,
-                    ValueSuffix = $" Critical Errors"
+                    valueSuffix = $" Critical Errors"
                 )
 
             else
@@ -65,9 +64,9 @@ type BadgeCreation =
                 let thresholds = 
                     Thresholds
                     |> Option.defaultValue (Map([
-                        0, Color.RED
-                        total/2, Color.ORANGE_2
-                        total, Color.GREEN
+                        string 0, BadgeColor.RED
+                        string (total/2), BadgeColor.ORANGE_2
+                        string total, BadgeColor.GREEN
                     ]))
 
                 let valueSuffix = 
@@ -76,8 +75,8 @@ type BadgeCreation =
 
                 Badge(
                     label = labelText,
-                    defaultColor = (DefaultColor |> Option.defaultValue (Color.fromString Defaults.DEFAULT_COLOR) ),
-                    Thresholds = thresholds,
+                    defaultColor = (DefaultColor |> Option.defaultValue (BadgeColor.ORANGE_2) ),
+                    thresholds = thresholds,
                     value = totalPassed,
-                    ValueSuffix = valueSuffix
+                    valueSuffix = valueSuffix
                 )

@@ -6,6 +6,7 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <Compile Include="Badge.fs" />
     <Compile Include="Helpers.fs" />
     <Compile Include="AVPRIndex\Globals.fs" />
     <Compile Include="AVPRIndex\Domain.fs" />

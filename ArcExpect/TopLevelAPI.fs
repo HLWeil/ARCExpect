@@ -105,8 +105,8 @@ type Execute =
         path: string,
         labelText: string,
         ?ValueSuffix: string,
-        ?Thresholds: Map<int, Color>,
-        ?DefaultColor: Color
+        ?Thresholds: Map<string, string>,
+        ?DefaultColor: string
     ) =
         fun (validationSummary: ValidationSummary) -> 
 
@@ -123,8 +123,8 @@ type Execute =
         basePath: string,
         ?BadgeLabelText: string,
         ?ValueSuffix: string,
-        ?Thresholds: Map<int, Color>,
-        ?DefaultColor: Color,
+        ?Thresholds: Map<string, string>,
+        ?DefaultColor: string,
         ?Payload: Dictionary<string, obj>
     ) =
         fun (arcValidationPackage: ARCValidationPackage) ->
