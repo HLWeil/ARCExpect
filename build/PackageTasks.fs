@@ -53,7 +53,7 @@ let packJS = BuildTask.create "PackJS" [clean; buildSolution; transpileTS] {
 
 let packPy = BuildTask.create "PackPy" [clean; buildSolution; transpilePy] {
     // run python "-m poetry install --no-root" "."
-    run python $"-m uv build -o {ProjectInfo.pyPkgDir}" "."
+    run uv $"build -o {ProjectInfo.pyPkgDir}" "."
 }
 
 let pack = BuildTask.createEmpty "Pack" [packDotNet; packJS; packPy]

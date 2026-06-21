@@ -1,3 +1,4 @@
+[project]
 name = "arcexpect"
 version = "0.0.1"
 description = "Helper for ARC validation scripts"
@@ -11,6 +12,7 @@ keywords = [
     "profile crate"
 ]
 dependencies = [
+    "fable_library>=5.3.0",
     "anybadge"
 ]
 
@@ -20,16 +22,14 @@ dependencies = [
 dev = [
     "pytest>=8.1.1,<9",
     "twine>=4.0.2",
-    "fable_library>=5.3.0",
-    "anybadge"
 ]
 
 [tool.poetry]
 include = [
-    "src/ArcExpect/py/**/*.py"
+    "ArcExpect/py/**/*.py"
 ]
 packages = [
-    { include = "**/*.py", from = "src/ArcExpect/", to = "arcexpect" }
+    { include = "**/*.py", from = "ArcExpect/", to = "arcexpect" }
 ]
 
 [build-system]

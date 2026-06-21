@@ -171,9 +171,9 @@ let buildSolution =
 
 
 let transpileTS = BuildTask.create "TranspileTS" [clean] {
-    run dotnet $"fable ./src/ProcessCore/ProcessCore.Javascript.fsproj --lang ts --fableLib @fable-org/fable-library-js --noCache -o src/ProcessCore/ts" ""
+    run dotnet $"fable ./ArcExpect/ArcExpect.fsproj --lang ts --fableLib @fable-org/fable-library-js --noCache -o ArcExpect/ts" ""
 }
 
 let transpilePy = BuildTask.create "TranspilePy" [clean] {
-    run dotnet $"fable ./src/ProcessCore/ProcessCore.Python.fsproj --lang python --noCache -o src/ProcessCore/py" ""
+    run dotnet $"fable ./ArcExpect/ArcExpect.fsproj --lang python --noCache -o ArcExpect/py" ""
 }
