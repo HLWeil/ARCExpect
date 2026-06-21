@@ -1,3 +1,7 @@
+### 0.0.2+4666b0e (Released 2026-6-21)
+* Bugfixes:
+    * [[#4666b0e](https://github.com/HLWeil/ARCExpect/commit/4666b0e17d16ac64d0cc614be00872ef9e33dd91)] fix passing tests badge being orange
+
 ### 0.0.1+dd99f9e (Released 2026-6-21)
 * Initial release for pypi
 * Additions:
