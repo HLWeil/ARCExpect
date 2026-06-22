@@ -8,8 +8,9 @@ surface used by validation-package authors.
 from __future__ import annotations
 
 from collections.abc import Iterable, Mapping
-from typing import Any, Callable
+from typing import Any, Callable, TypeVar
 
+from fable_library.async_builder import Async
 from fable_library.list import of_seq as _fsharp_list
 from fable_library.map import of_seq as _fsharp_map
 
@@ -84,6 +85,7 @@ from .py.AVPRIndex.frontmatter import (
     FrontmatterLanguage_FSharpFrontmatter,
     FrontmatterLanguage_PythonFrontmatter,
     FrontmatterLanguage_fromString_Z721C83C5 as _frontmatter_language_from_string,
+    _FrontmatterLanguage,
 )
 from .py.fable_modules.fable_pyxpecto.pyxpecto import (
     Assert_NET_equal as _expect_equal,
@@ -93,6 +95,7 @@ from .py.fable_modules.fable_pyxpecto.pyxpecto import (
     Expect_isSome as _expect_is_some,
     Expect_isTrue as _expect_is_true,
     Expect_stringContains as _expect_string_contains,
+    Model_TestCase,
     Test_ftestCase as _focused_test_case,
     Test_ptestCase as _pending_test_case,
     Test_testCase as _test_case,
@@ -101,7 +104,10 @@ from .py.fable_modules.fable_pyxpecto.pyxpecto import (
 )
 
 
-def _tests(tests: Iterable[Any] | None):
+_T = TypeVar("_T")
+
+
+def _tests(tests: Iterable[Model_TestCase] | None):
     return _fsharp_list([] if tests is None else tests)
 
 
@@ -117,27 +123,27 @@ def _thresholds(thresholds: Mapping[str, str] | None):
     return _fsharp_map(list(thresholds.items()), _StringComparer())
 
 
-def test_case(name: str, body: Callable[[], None]):
+def test_case(name: str, body: Callable[[], None]) -> Model_TestCase:
     """Create a synchronous validation case."""
     return _test_case(name, body)
 
 
-def test_case_async(name: str, body: Any):
+def test_case_async(name: str, body: Async[None]) -> Model_TestCase:
     """Create an asynchronous validation case from a Fable ``Async`` body."""
     return _test_case_async(name, body)
 
 
-def pending_test_case(name: str, body: Callable[[], None]):
+def pending_test_case(name: str, body: Callable[[], None]) -> Model_TestCase:
     """Create a skipped validation case."""
     return _pending_test_case(name, body)
 
 
-def focused_test_case(name: str, body: Callable[[], None]):
+def focused_test_case(name: str, body: Callable[[], None]) -> Model_TestCase:
     """Create a focused validation case."""
     return _focused_test_case(name, body)
 
 
-def test_list(name: str, tests: Iterable[Any]):
+def test_list(name: str, tests: Iterable[Model_TestCase]) -> Model_TestCase:
     """Group validation cases under a descriptive name."""
     return _test_list(name, _tests(tests))
 
@@ -146,11 +152,11 @@ class Expect:
     """Assertions available to validation cases."""
 
     @staticmethod
-    def equal(actual: Any, expected: Any, message: str = "") -> None:
+    def equal(actual: _T, expected: _T, message: str = "") -> None:
         _expect_equal(actual, expected, message)
 
     @staticmethod
-    def not_equal(actual: Any, expected: Any, message: str = "") -> None:
+    def not_equal(actual: _T, expected: _T, message: str = "") -> None:
         _expect_not_equal(actual, expected, message)
 
     @staticmethod
@@ -162,11 +168,11 @@ class Expect:
         _expect_is_false(value)(message)
 
     @staticmethod
-    def is_empty(value: Any, message: str = "") -> None:
+    def is_empty(value: Iterable[_T], message: str = "") -> None:
         _expect_is_empty(value, message)
 
     @staticmethod
-    def is_some(value: Any, message: str = "") -> None:
+    def is_some(value: _T | None, message: str = "") -> None:
         _expect_is_some(value, message)
 
     @staticmethod
@@ -181,7 +187,7 @@ class FrontmatterLanguage:
     PYTHON = FrontmatterLanguage_PythonFrontmatter()
 
     @staticmethod
-    def from_string(value: str):
+    def from_string(value: str) -> _FrontmatterLanguage:
         return _frontmatter_language_from_string(value)
 
 
@@ -267,7 +273,10 @@ class Setup:
         )
 
     @staticmethod
-    def metadata_from_frontmatter(frontmatter: str, language: Any = FrontmatterLanguage.PYTHON) -> ValidationPackageMetadata:
+    def metadata_from_frontmatter(
+        frontmatter: str,
+        language: _FrontmatterLanguage = FrontmatterLanguage.PYTHON,
+    ) -> ValidationPackageMetadata:
         return _metadata_from_frontmatter(frontmatter, language)
 
     @staticmethod
@@ -279,8 +288,8 @@ class Setup:
     def validation_package(
         metadata: ValidationPackageMetadata,
         *,
-        critical: Iterable[Any] | None = None,
-        non_critical: Iterable[Any] | None = None,
+        critical: Iterable[Model_TestCase] | None = None,
+        non_critical: Iterable[Model_TestCase] | None = None,
     ) -> ARCValidationPackage:
         return _create_validation_package(metadata, _tests(critical), _tests(non_critical))
 
@@ -288,8 +297,8 @@ class Setup:
     def validation_package_from_script(
         script_path: str,
         *,
-        critical: Iterable[Any] | None = None,
-        non_critical: Iterable[Any] | None = None,
+        critical: Iterable[Model_TestCase] | None = None,
+        non_critical: Iterable[Model_TestCase] | None = None,
     ) -> ARCValidationPackage:
         """Create a validation package using metadata parsed from its script frontmatter."""
         return Setup.validation_package(
@@ -307,7 +316,7 @@ class Execute:
         return _validate(None if payload is None else dict(payload))(package)
 
     @staticmethod
-    def validation_async(package: ARCValidationPackage, *, payload: Mapping[str, Any] | None = None):
+    def validation_async(package: ARCValidationPackage, *, payload: Mapping[str, Any] | None = None) -> Async[ValidationSummary]:
         return _validate_async(None if payload is None else dict(payload))(package)
 
     @staticmethod

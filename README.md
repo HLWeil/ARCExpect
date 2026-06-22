@@ -38,7 +38,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from ArcExpect import Execute, Expect, Setup, test_case, test_list
+from arcexpect import Execute, Expect, Setup, test_case, test_list
 
 
 parser = argparse.ArgumentParser(description="Validate the basic structure of an ARC.")

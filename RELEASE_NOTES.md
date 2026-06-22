@@ -1,9 +1,13 @@
+### 0.0.3+19bd319 (Released 2026-6-22)
+* Additions:
+    * [[#19bd319](https://github.com/HLWeil/ARCExpect/commit/19bd31998980fd55f1c50e2069de20688e32bb14)] bump to 0.0.2 pypi
+
 ### 0.0.2+4666b0e (Released 2026-6-21)
 * Bugfixes:
     * [[#4666b0e](https://github.com/HLWeil/ARCExpect/commit/4666b0e17d16ac64d0cc614be00872ef9e33dd91)] fix passing tests badge being orange
 
 ### 0.0.1+dd99f9e (Released 2026-6-21)
-* Initial release for pypi
+    * Initial release for pypi
 * Additions:
     * [[#dd99f9e](https://github.com/HLWeil/ARCExpect/commit/dd99f9ed730f99b4c39aaf548c27c0555ca2f960)] prepare project for 0.0.1 test release
     * [[#3388ba4](https://github.com/HLWeil/ARCExpect/commit/3388ba47de8b40f8feaabc3c257da46145b06866)] final adjustments for python packaging
